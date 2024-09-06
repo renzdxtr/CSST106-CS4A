@@ -176,7 +176,7 @@ Manual attendance tracking is prone to inefficiencies such as time consumption, 
        FACES = pickle.load(f)
 
    # Create a KNN classifier and train it with the face data and corresponding labels
-   knn = KNeighborsClassifier(n_neighbors=1) #5
+   knn = KNeighborsClassifier(n_neighbors=1)
    knn.fit(FACES, LABELS)
 
    # Save the trained model (optional)
