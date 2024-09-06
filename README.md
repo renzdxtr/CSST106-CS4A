@@ -204,7 +204,7 @@ The integration of DL into image processing further advances artificial intellig
 
 ---
 
-### Reference:
+### References:
 [^1]: Sawtell-Rickson, J. (2022, December 21). What is Computer Vision? Built In. https://builtin.com/machine-learning/computer-vision
 [^2]: DeepAI. (2020, June 25). Computer Vision. DeepAI. https://deepai.org/machine-learning-glossary-and-terms/computer-vision
 [^3]: What is Computer Vision? (n.d.). Intel. https://www.intel.com/content/www/us/en/learn/what-is-computer-vision.html
