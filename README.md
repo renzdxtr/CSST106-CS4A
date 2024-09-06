@@ -191,6 +191,12 @@ Manual attendance tracking is prone to inefficiencies such as time consumption, 
 
 ---
 
+### Model Demonstration
+
+[![Model Demonstration](https://github.com/user-attachments/assets/1296451c-1c0f-4806-98a2-8345638d8f9d)](https://drive.google.com/file/d/1l5K-B0lCw0L-LZEKT9vqizD8X_8DCCL-/preview)
+
+---
+
 ### Conclusion
 
 Effective image processing is important in AI because it helps systems analyze and understand visual data better. Techniques like edge detection, grayscaling, and resizing are crucial for enhancing AI’s ability to recognize, classify, and understand images [^4][^5]. Edge detection identifies object boundaries, helping AI systems detect and distinguish objects, which is vital for tasks like facial recognition [^5]. Grayscaling simplifies images by converting them to a single color channel, making them simpler to process while keeping important details [^6]. Resizing ensures that images conform to the required input dimensions of the model, allowing for efficient and accurate processing [^6].
