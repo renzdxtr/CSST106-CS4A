@@ -26,12 +26,6 @@ Image processing is crucial in AI as it enhances, manipulates, and analyzes imag
 
 ---
 
-### Reference:
-The Complete Guide to Image Preprocessing Techniques in Python | by Maahi Patel | Medium  
-[Link to article](https://medium.com/@maahip1304/the-complete-guide-to-image-preprocessing-techniques-in-python-dca30804550c)
-
----
-
 ### Real-World AI Application: Facial Recognition for Automated Attendance
 
 Facial recognition systems are widely used in various applications, from security and surveillance to user authentication and attendance management. In educational and corporate settings, automated attendance systems using facial recognition provide a reliable and efficient alternative to traditional methods, addressing issues of inefficiency and the potential for falsification. By automatically identifying individuals through facial features, these systems can log attendance accurately and in real-time.
@@ -197,3 +191,13 @@ Recent advancements in image processing have seen a significant shift from tradi
 Remarkable improvements have been achieved with the introduction of Convolutional Neural Networks (CNNs), currently the backbone of most image analysis systems, which automatically detect important features without any human supervision. Other emerging techniques were the Recurrent Neural Networks (RNNs) and Long Short-Term Memory Networks (LSTMs), which are less common for static images, but significantly useful for sequences like videos. These models can handle applications like video-based face recognition or motion analysis.
 
 The integration of DL into image processing further advances artificial intelligence. These advanced systems can understand and analyze complex visual data with incredible detail. As these technologies continue to develop, they will revolutionize industries by supporting smarter, more adaptable systems that can effectively operate and respond within complex environments.
+
+---
+
+### Reference:
+The Complete Guide to Image Preprocessing Techniques in Python | by Maahi Patel | Medium  
+[Link to article](https://medium.com/@maahip1304/the-complete-guide-to-image-preprocessing-techniques-in-python-dca30804550c)
+
+Image Processing: Techniques, Types, & Applications [2024] | by Rohit Kundu | V7labs
+[Link to article](https://www.v7labs.com/blog/image-processing-guide)
+
