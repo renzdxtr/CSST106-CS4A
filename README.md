@@ -45,8 +45,7 @@ Manual attendance tracking is prone to inefficiencies such as time consumption, 
 
 ---
 
-### Image Processing Implementation:
-**Facial Recognition for Automated Attendance**
+### Image Processing Implementation: Facial Recognition for Automated Attendance
 
 1. **Face Detection:**  
    OpenCV’s res10_300x300_ssd_iter_140000.caffemodel with deploy.prototxt config file was used to perform face detection on frames extracted from the camera input.
