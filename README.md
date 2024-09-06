@@ -2,7 +2,10 @@
 Topic 1.1: Introduction to Computer Vision and Image Processing
 
 ### Machine Problem No. 1: Exploring the Role of Computer Vision and Image Processing in AI
-**Introduction to Computer Vision and Image Processing**
+
+---
+
+### Introduction to Computer Vision and Image Processing
 
 Computer Vision is a field of AI that enables systems to interpret and process visual data from the world. It involves techniques to acquire, process, analyze, and understand images to produce numerical or significant information.
 
@@ -46,54 +49,151 @@ Manual attendance tracking is prone to inefficiencies such as time consumption, 
 
    ```python
    # Face detection using OpenCV
-  import cv2
-import numpy as np
-from PIL import Image, ImageTk
+   import cv2
+   import numpy as np
+   from PIL import Image, ImageTk
+   
+   # Configuration for DNN model
+   MODEL_FILE = "../MODELS/res10_300x300_ssd_iter_140000.caffemodel"  # Path to the model file
+   CONFIG_FILE = "../MODELS/deploy.prototxt"  # Path to the configuration file
+   
+   # Configuration for Video Source (0 for the default webcam)
+   video_source = 0
+   vid = cv2.VideoCapture(video_source)
+   
+   # Load the DNN model from Caffe
+   net = cv2.dnn.readNetFromCaffe(CONFIG_FILE, MODEL_FILE)
+   
+   # Read the frame from the video source
+   ret, frame = vid.read()
+   
+   if ret:
+       # Resize the frame to fit the DNN input size
+       frame_resized = cv2.resize(frame, (300, 300))
+       
+       # Prepare the image as input for the model
+       blob = cv2.dnn.blobFromImage(frame_resized, 1.0, (300, 300), (104.0, 177.0, 123.0))
+       
+       # Set the blob as input to the network
+       net.setInput(blob)
+       
+       # Perform forward pass to get face detections
+       detections = net.forward()
+   
+       # Loop through detections
+       for i in range(detections.shape[2]):
+           confidence = detections[0, 0, i, 2]
+           
+           # Only proceed if confidence is greater than 0.5
+           if confidence > 0.5:
+               # Extract the bounding box for the face
+               box = detections[0, 0, i, 3:7] * np.array([frame.shape[1], frame.shape[0], frame.shape[1], frame.shape[0]])
+               (x, y, x2, y2) = box.astype("int")
+               
+               # Extract the face region
+               face = frame[y:y2, x:x2]
+               
+               # Draw a rectangle around the face
+               cv2.rectangle(frame, (x, y), (x2, y2), (0, 255, 0), 2)
+       
+       # Convert frame to RGB and display using Tkinter's ImageTk
+       photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+   
+2. **Pre-processing for Dataset Creation:**  
+   Resizing (images were standardized to 200x200 pixels) → Grayscaling → Data Storage (the processed face data is stored in .pkl files)
 
-# Configuration for DNN model
-MODEL_FILE = "../MODELS/res10_300x300_ssd_iter_140000.caffemodel"  # Path to the model file
-CONFIG_FILE = "../MODELS/deploy.prototxt"  # Path to the configuration file
+   ```python
+   # Resizing
+   face = cv2.resize(face, (200, 200))  # Resize to ensure consistency
 
-# Configuration for Video Source (0 for the default webcam)
-video_source = 0
-vid = cv2.VideoCapture(video_source)
+   # Grayscaling
+   face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
 
-# Load the DNN model from Caffe
-net = cv2.dnn.readNetFromCaffe(CONFIG_FILE, MODEL_FILE)
+   # Data Storage
+   def save_data(person_name):
+     """Serializes and saves collected face data and names to files."""
 
-# Read the frame from the video source
-ret, frame = vid.read()
+     DATA_PATH = "data/"  # Path for saving serialized data
+   
+     faces_data = np.asarray(face_data)
+     faces_data = faces_data.reshape(len(face_data), -1)
+   
+     if not os.path.exists(DATA_PATH):
+         os.makedirs(DATA_PATH)
+   
+     names_file = os.path.join(DATA_PATH, 'names.pkl')
+     faces_file = os.path.join(DATA_PATH, 'faces_data.pkl')
+   
+     # Append or create new data for names
+     if os.path.isfile(names_file):
+         with open(names_file, 'rb') as f:
+             names = pickle.load(f)
+         names += [person_name] * len(face_data)
+     else:
+         names = [person_name] * len(face_data)
+   
+     with open(names_file, 'wb') as f:
+         pickle.dump(names, f)
+   
+     # Append or create new data for faces
+     if os.path.isfile(faces_file):
+         with open(faces_file, 'rb') as f:
+             faces = pickle.load(f)
+         faces = np.append(faces, faces_data, axis=0)
+     else:
+         faces = faces_data
+   
+     with open(faces_file, 'wb') as f:
+         pickle.dump(faces, f)
 
-if ret:
-    # Resize the frame to fit the DNN input size
-    frame_resized = cv2.resize(frame, (300, 300))
-    
-    # Prepare the image as input for the model
-    blob = cv2.dnn.blobFromImage(frame_resized, 1.0, (300, 300), (104.0, 177.0, 123.0))
-    
-    # Set the blob as input to the network
-    net.setInput(blob)
-    
-    # Perform forward pass to get face detections
-    detections = net.forward()
+4. **Pre-processing for Prediction**  
+   The face image (RGB) is resized to 50x50 pixels and flattened to match the features expected by the model used which were 7500 features (50 * 50 * 3 = 7500).
 
-    # Loop through detections
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        
-        # Only proceed if confidence is greater than 0.5
-        if confidence > 0.5:
-            # Extract the bounding box for the face
-            box = detections[0, 0, i, 3:7] * np.array([frame.shape[1], frame.shape[0], frame.shape[1], frame.shape[0]])
-            (x, y, x2, y2) = box.astype("int")
-            
-            # Extract the face region
-            face = frame[y:y2, x:x2]
-            
-            # Draw a rectangle around the face
-            cv2.rectangle(frame, (x, y), (x2, y2), (0, 255, 0), 2)
-    
-    # Convert frame to RGB and display using Tkinter's ImageTk
-    photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+   ```python
+   # Face is resized to 50x50 pixels and flattened
+   face_resized = cv2.resize(face, (50, 50)).flatten().reshape(1, -1)
+   
 
+3. **Model Training**  
+   The model used for classification was the KNeighborsClassifier with ‘n_neighbors’ parameter set to ‘1’. It was fitted on ‘FACES’ and ‘LABELS’ stored in .pkl files.
 
+   ```python
+   from sklearn.neighbors import KNeighborsClassifier
+   import numpy as np
+   import pickle
+
+   # Paths to data
+   LABELS_PATH = "DATA/names.pkl"
+   FACES_PATH = "DATA/faces_data.pkl"
+
+   # Load the model and label data from serialized files
+   with open(LABELS_PATH, 'rb') as w:
+       LABELS = pickle.load(w)
+   with open(FACES_PATH, 'rb') as f:
+       FACES = pickle.load(f)
+
+   # Create a KNN classifier and train it with the face data and corresponding labels
+   knn = KNeighborsClassifier(n_neighbors=1) #5
+   knn.fit(FACES, LABELS)
+
+   # Save the trained model (optional)
+   with open('knn_model.pkl', 'wb') as f:
+       pickle.dump(knn, f)
+
+---
+
+### Conclusion
+
+Effective image processing is important in AI because it helps systems analyze and understand visual data better. Techniques like edge detection, grayscaling, and resizing are crucial for enhancing AI’s ability to recognize, classify, and understand images. Edge detection identifies object boundaries, helping AI systems detect and distinguish objects, which is vital for tasks like facial recognition. Grayscaling simplifies images by converting them to a single color channel, making them simpler to process while keeping important details. Resizing ensures that images conform to the required input dimensions of the model, allowing for efficient and accurate processing.
+
+Looking back at the face recognition model I made for the automated attendance tracker, these techniques were crucial. Edge detection helped the model highlight facial boundaries, aiding the model in recognizing key features, Grayscaling, on the other hand, made images easier to work with, and resizing the images to 50x50 pixels ensured the data fit the model’s input needs. These steps improved the system’s ability to accurately detect and recognize faces, making attendance tracking more reliable.
+
+---
+
+### Research on Emerging Form of Image Processing
+
+Recent advancements in image processing have seen a significant shift from traditional machine learning techniques, such as SVMs and k-nearest neighbors, to more sophisticated deep learning (DL) models. These models leverage large neural networks to improve accuracy and efficiency in tasks like face recognition, object detection, and image classification.
+
+Remarkable improvements have been achieved with the introduction of Convolutional Neural Networks (CNNs), currently the backbone of most image analysis systems, which automatically detect important features without any human supervision. Other emerging techniques were the Recurrent Neural Networks (RNNs) and Long Short-Term Memory Networks (LSTMs), which are less common for static images, but significantly useful for sequences like videos. These models can handle applications like video-based face recognition or motion analysis.
+
+The integration of DL into image processing further advances artificial intelligence. These advanced systems can understand and analyze complex visual data with incredible detail. As these technologies continue to develop, they will revolutionize industries by supporting smarter, more adaptable systems that can effectively operate and respond within complex environments.
