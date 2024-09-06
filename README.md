@@ -3,7 +3,11 @@
 
 ### Machine Problem No. 1: Exploring the Role of Computer Vision and Image Processing in AI
 
-<video src='https://drive.google.com/file/d/1l5K-B0lCw0L-LZEKT9vqizD8X_8DCCL-/preview' width=180/></video>
+
+
+https://github.com/user-attachments/assets/61076eac-8d1e-400b-8e50-b211ee2156ef
+
+
 
 ---
 
