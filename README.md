@@ -1,7 +1,9 @@
-## CCST106 
+## CSST106 
 ### Topic 1.1: Introduction to Computer Vision and Image Processing
 
 ### Machine Problem No. 1: Exploring the Role of Computer Vision and Image Processing in AI
+
+<video src='https://github.com/renzdxtr/CSST106-CS4A/blob/main/MODEL-DEMONSTRATION.mp4' width=180/>
 
 ---
 
