@@ -152,3 +152,10 @@
 * Common Image Processing Tasks
   * Engage in a problem-solving session focused on common challenges encountered in image processing tasks.
   * Scenario-Based Problems: Solve scenarios where you must choose and apply appropriate image processing techniques.
+
+  ### Scenario 1: Scaling and Rotation
+   * Problem: You have a large dataset of product images for an e-commerce website. The images are of various sizes and orientations. You need to standardize them to a consistent size and upright orientation for display on the website.
+   * Solution: Scaling: Use interpolation techniques like bilinear or bicubic interpolation to resize images.
+    For downscaling, consider using anti-aliasing to prevent loss of detail.
+    Rotation:
+    
