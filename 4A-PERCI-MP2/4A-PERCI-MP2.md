@@ -559,7 +559,7 @@ This solution provides a way to detect and crop the document content, making it 
        * The result is normalized to the range [0, 255].
        * The output is an image with detected edges.
       
-## **Summary**
+## **Summary of Implemented Image Processing Techniques**
  *  **Image Transformation**:
     * Scaling: Implemented using cv2.resize with linear interpolation.
     * Rotation: Achieved using cv2.getRotationMatrix2D and cv2.warpAffine.
