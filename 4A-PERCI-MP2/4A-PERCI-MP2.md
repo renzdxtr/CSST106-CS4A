@@ -332,6 +332,8 @@ This approach allows for a natural-looking skin softening effect, enhancing port
      * Contour Detection: The find_contours function finds contours in the edge-detected image using cv2.findContours. It then filters the contours to find the largest one, which is assumed to be the document. The contour is approximated to a polygon using cv2.approxPolyDP.
      * Document Cropping: The crop_document function calculates the bounding box of the detected contour using cv2.boundingRect, and crops the image using this bounding box to isolate the document content. This approach is simpler and more straightforward compared to using perspective transforms.
 
+This solution provides a way to detect and crop the document content, making it easier to process scanned documents or images of documents. The result is an image with the document content isolated from the background.
+
 ## **Assignment**
 * Implementing Image Transformations and Filtering
   * Choose a set of images and apply the techniques you've learned, including scaling, rotation, blurring, and edge detection.
