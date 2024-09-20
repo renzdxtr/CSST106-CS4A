@@ -1,7 +1,7 @@
 ### Topic 1.2: Image Processing Techniques
 # Machine Problem No. 2: Applying Image Processing Techniques
 
-## Hands-On Exploration
+## **Hands-On Exploration**
 * Lab Session 1: Image Transformations
   * Scaling and Rotation: Learn how to apply scaling and rotation transformations to images using OpenCV.
   * Implementation: Practice these transformations on sample images provided in the lab.
@@ -148,7 +148,7 @@
     ```
     ![image](https://github.com/user-attachments/assets/13dac6d8-1158-44a1-a2cd-dfe262c5f4a8)
 
-## Problem-Solving Session
+## **Problem-Solving Session**
 * Common Image Processing Tasks
   * Engage in a problem-solving session focused on common challenges encountered in image processing tasks.
   * Scenario-Based Problems: Solve scenarios where you must choose and apply appropriate image processing techniques.
@@ -331,3 +331,267 @@ This approach allows for a natural-looking skin softening effect, enhancing port
      * Edge Detection: The detect_edges function converts the image to grayscale, applies Gaussian blur to reduce noise, and then uses the Canny edge detection algorithm to identify edges in the image.
      * Contour Detection: The find_contours function finds contours in the edge-detected image using cv2.findContours. It then filters the contours to find the largest one, which is assumed to be the document. The contour is approximated to a polygon using cv2.approxPolyDP.
      * Document Cropping: The crop_document function calculates the bounding box of the detected contour using cv2.boundingRect, and crops the image using this bounding box to isolate the document content. This approach is simpler and more straightforward compared to using perspective transforms.
+
+## **Assignment**
+* Implementing Image Transformations and Filtering
+  * Choose a set of images and apply the techniques you've learned, including scaling, rotation, blurring, and edge detection.
+  * Documentation: Document the steps taken, and the results achieved in a report.
+
+  ### Scaling
+     ```python
+     def scale_image(img, scale_factor):
+         height, width = img.shape[:2]
+         scaled_img = cv2.resize(img, (int(width * scale_factor), int(height * scale_factor)),
+                                 interpolation=cv2.INTER_LINEAR)
+         return scaled_img
+
+     scaled_image = scale_image(image, 0.5)
+     display_images([image, scaled_image], ["Original Image", "Scaled Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/f142d90b-6cb0-46aa-b24a-d689542f593f)
+
+     * Explanation:
+       * This function uses cv2.resize with cv2.INTER_LINEAR interpolation to resize an image.
+       * scale_factor determines the new size relative to the original.
+       * Linear interpolation is a good balance between speed and quality for most images
+      
+  ### Rotation
+     ```python
+     def rotate_image(img, angle):
+         height, width = img.shape[:2]
+         center = (width // 2, height // 2)
+         matrix = cv2.getRotationMatrix2D(center, angle, 1.0)
+         rotated_img = cv2.warpAffine(img, matrix, (width, height))
+         return rotated_img
+
+     rotated_image = rotate_image(image, 45)
+     display_images([image, rotated_image], ["Original Image", "Rotated Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/2328fe42-a78f-4e1e-afab-cc1793d6459d)
+
+
+     * Explanation:
+       * This function uses cv2.resize with cv2.INTER_LINEAR interpolation to resize an image.
+       * scale_factor determines the new size relative to the original.
+       * Linear interpolation is a good balance between speed and quality for most images
+      
+  ### Gaussian Blur
+     ```python
+     def gaussian_blur(img, ksize=(15, 15)):
+         return cv2.GaussianBlur(img, ksize, 0)
+     
+     gaussian_blurred_image = gaussian_blur(image)
+     display_images([image, gaussian_blurred_image], ["Original Image", "Gaussian Blurred Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/d156e497-6511-4bd4-8eb8-baa90cfd7fe1)
+
+
+     * Explanation:
+       * This function applies a Gaussian blur using cv2.GaussianBlur.
+       * The ksize parameter controls the kernel size (e.g., (5, 5) for a 5x5 kernel).
+      
+  ### Median Blur
+     ```python
+     def median_blur(img, ksize=15):
+         return cv2.medianBlur(img, ksize)
+
+     median_blurred_image = median_blur(image)
+     display_images([image, median_blurred_image], ["Original Image", "Median Blurred Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/d6c9837d-76c2-45b8-9086-27e720cdc10b)
+
+
+     * Explanation:
+       * This function applies a median blur using cv2.medianBlur.
+       * ksize defines the kernel size (e.g., 5 for a 5x5 kernel).
+      
+  ### Box Blur
+     ```python
+     def box_blur(img, ksize=(15, 15)):
+         return cv2.blur(img, ksize=ksize)
+
+     box_blurred_image = box_blur(image)
+     display_images([image, box_blurred_image], ["Original Image", "Box Blurred Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/1f208fcc-ce6f-4ba2-8551-a46bc8e40c28)
+
+
+     * Explanation:
+       * This function applies a box blur using cv2.blur.
+       * ksize defines the kernel size (e.g., 5 for a 5x5 kernel).
+      
+  ### Bilateral Blur
+     ```python
+     def bilateral_blur(img, d=9, sigmaColor=75, sigmaSpace=75):
+         return cv2.bilateralFilter(img, d, sigmaColor, sigmaSpace)
+
+     bilateral_blurred_image = bilateral_blur(image)
+     display_images([image, bilateral_blurred_image], ["Original Image", "Bilateral Blurred Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/12c57272-d35a-424d-82de-2292181d7186)
+
+
+     * Explanation:
+       * This function applies a bilateral blur using cv2.bilateralFilter.
+       * d controls the diameter of the neighborhood.
+       * sigmaColor defines the filter sigma in the color space.
+       * sigmaSpace defines the filter sigma in the coordinate space.
+      
+  ### Motion Blur
+     ```python
+     def motion_blur(img, size=15, angle=0):
+         # Create a kernel for motion blur with the specified size
+         kernel_motion_blur = np.zeros((size, size))
+     
+         # Set the middle row of the kernel to 1, which will be used to blur the image
+         kernel_motion_blur[int((size-1)//2), :] = np.ones(size)
+     
+         # Normalize the kernel by dividing by its size to ensure the output image has the same intensity
+         kernel_motion_blur = kernel_motion_blur / size
+     
+         # Apply the motion blur kernel to the input image using OpenCV's filter2D function
+         blurred_img = cv2.filter2D(img, -1, kernel_motion_blur)
+     
+         # Return the blurred image
+         return blurred_img
+
+     motion_blurred_image = motion_blur(image, size=15, angle=45)
+     display_images([image, motion_blurred_image], ["Original Image", "Motion Blurred Image"])
+     ```
+     ![image](https://github.com/user-attachments/assets/06281a71-dfe7-4f9a-9c82-b6df1befcde1)
+
+
+     * Explanation:
+       * This function applies a motion blur.
+       * It creates a motion blur kernel (a line of 1s with specified length).
+       * cv2.filter2D applies the kernel to the image.
+      
+  ### Canny Edge Detection
+     ```python
+     def canny(img, threshold1=100, threshold2=200):
+         return cv2.Canny(img, threshold1, threshold2)
+
+     canny_edges = canny(image)  # Convert to grayscale before applying Canny
+     display_images([image, canny_edges], ["Original Image", "Canny Edges"])
+     ```
+     ![image](https://github.com/user-attachments/assets/8e1405c4-029a-4ded-a9b5-79a2597fcff0)
+
+
+     * Explanation:
+       * This function implements the Canny edge detection algorithm using cv2.Canny.
+       * threshold1 and threshold2 control the hysteresis thresholding for edge detection.
+      
+  ### Sobel Edge Detection
+     ```python
+     def sobel_edge_detection(img):
+         # Sobel edge detection in the x direction
+         grad_x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+         # Sobel edge detection in the y direction
+         grad_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+         # Combine the two gradients
+         grad = np.sqrt(grad_x**2 + grad_y**2)
+         # Normalize to [0, 255]
+         image = np.uint8(grad / grad.max() * 255)
+         return image
+
+     sobel_edges = sobel_edge_detection(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)) 
+     display_images([image, sobel_edges], ["Original Image", "Sobel Edges"])
+     ```
+     ![image](https://github.com/user-attachments/assets/9498aac1-1722-41c8-a7f4-291c6b7ea29e)
+
+
+     * Explanation:
+       * This function applies the Sobel edge detection algorithm to an image.
+       * It calculates gradients in both x and y directions using cv2.Sobel.
+       * The gradients are combined using the Euclidean distance formula.
+       * The result is normalized to the range [0, 255].
+       * The output is an image with detected edges.
+      
+  ### Laplacian Edge Detection
+     ```python
+     def laplacian_edge_detection(img):
+         # Apply Laplacian operator
+         laplacian = cv2.Laplacian(img, cv2.CV_64F)
+         # Normalize to [0, 255]
+         image = np.uint8(laplacian / laplacian.max() * 255)
+         return image
+
+     laplacian_edges = laplacian_edge_detection(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY))
+     display_images([image, laplacian_edges], ["Original Image", "Laplacian Edges"])
+     ```
+     ![image](https://github.com/user-attachments/assets/b0bc5623-3680-44cf-89bd-656f1cca18e0)
+
+
+     * Explanation:
+       * This function applies the Laplacian edge detection algorithm to an image.
+       * It uses the cv2.Laplacian function to compute the Laplacian of the image.
+       * The result is normalized to the range [0, 255].
+       * The output is an image with detected edges.
+      
+  ### Prewitt Edge Detection
+     ```python
+     def prewitt_edge_detection(img):
+         # Prewitt operator kernels for x and y directions
+         kernel_x = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+         kernel_y = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
+         # Applying the Prewitt operator
+         grad_x = cv2.filter2D(img, -1, kernel_x)
+         grad_y = cv2.filter2D(img, -1, kernel_y)
+         # Combine the x and y gradients by converting to floating point
+         grad = np.sqrt(grad_x**2 + grad_y**2)
+         # Normalize to [0, 255]
+         image = np.uint8(grad / grad.max() * 255)
+         return image
+
+     prewitt_edges = prewitt_edge_detection(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY))
+     display_images([image, prewitt_edges], ["Original Image", "Prewitt Edges"])
+     ```
+     ![image](https://github.com/user-attachments/assets/0f4381cc-46df-4e5c-ba6d-c072379c437f)
+
+
+     * Explanation:
+       * This function applies the Prewitt edge detection algorithm to an image.
+       * It defines Prewitt operator kernels for x and y directions.
+       * The kernels are applied to the image using cv2.filter2D.
+       * The gradients are combined using the Euclidean distance formula.
+       * The result is normalized to the range [0, 255].
+       * The output is an image with detected edges.
+      
+## **Summary**
+ *  **Image Transformation**:
+    * Scaling: Implemented using cv2.resize with linear interpolation.
+    * Rotation: Achieved using cv2.getRotationMatrix2D and cv2.warpAffine.
+ *  **Image Blurring:**  
+    * Gaussian Blur: Applied using cv2.GaussianBlur.
+    * Median Blur: Implemented with cv2.medianBlur.
+    * Box Blur: Utilized cv2.blur.
+    * Bilateral Blur: Employed cv2.bilateralFilter for edge-preserving smoothing.
+    * Motion Blur: Custom implementation using a motion blur kernel and cv2.filter2D.
+   
+ *  **Edge Detection:**
+    * Canny Edge Detection: Applied using cv2.Canny.
+    * Sobel Edge Detection: Implemented using cv2.Sobel in both x and y directions.
+    * Laplacian Edge Detection: Utilized cv2.Laplacian.
+    * Prewitt Edge Detection: Custom implementation using Prewitt operator kernels and cv2.filter2D.
+  
+## **Documentation**
+
+ * **Image Transformation:**
+   * Successfully implemented scaling and rotation functions:
+     * Scaling: Allows for resizing images while maintaining aspect ratio.
+     * Rotation: This function can rotate images by any specified angle.
+
+ * **Image Blurring:**
+   * Implemented various blurring techniques, each with unique characteristics:
+     * Gaussian Blur: Effective for general noise reduction.
+     * Median Blur: Particularly useful for salt-and-pepper noise removal.
+     * Box Blur: Simple and fast blurring method.
+     * Bilateral Blur: Preserves edges while smoothing flat areas.
+     * Motion Blur: Simulates the effect of camera or object motion.
+
+ * **Edge Detection:**
+   * Successfully implemented multiple edge detection algorithms:
+     * Canny: Provides good edge detection with noise suppression.
+     * Sobel: Emphasizes vertical and horizontal edges.
+     * Laplacian: Detects edges in both directions simultaneously.
+     * Prewitt: Similar to Sobel but with different kernel values.
