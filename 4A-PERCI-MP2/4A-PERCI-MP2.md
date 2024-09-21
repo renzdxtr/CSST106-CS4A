@@ -373,9 +373,9 @@ This solution provides a way to detect and crop the document content, making it 
 
 
      * Explanation:
-       * This function uses cv2.resize with cv2.INTER_LINEAR interpolation to resize an image.
-       * scale_factor determines the new size relative to the original.
-       * Linear interpolation is a good balance between speed and quality for most images
+       * This function rotates an image by a specified angle.
+       * It uses cv2.getRotationMatrix2D to calculate the rotation matrix.
+       * cv2.warpAffine applies the rotation matrix to the image.
       
   ### Gaussian Blur
      ```python
